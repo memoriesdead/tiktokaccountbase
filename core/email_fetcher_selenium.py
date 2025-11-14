@@ -23,12 +23,19 @@ class SeleniumEmailFetcher:
             options.add_argument('--ignore-certificate-errors')
             options.add_argument('--ignore-ssl-errors')
             options.add_argument('--disable-blink-features=AutomationControlled')
+            # Increase page load timeout for slow Oracle Cloud server
+            options.add_argument('--page-load-timeout=60000')
 
             if headless:
                 options.add_argument('--headless')
 
             service = Service(ChromeDriverManager().install())
             self.driver = webdriver.Chrome(service=service, options=options)
+
+            # Set timeouts for Oracle Cloud
+            self.driver.set_page_load_timeout(60)  # 60 seconds for page load
+            self.driver.implicitly_wait(10)  # 10 seconds for element finding
+
             return True
         except Exception as e:
             print(f"   [ERROR] Failed to init browser: {e}")
@@ -39,27 +46,36 @@ class SeleniumEmailFetcher:
         try:
             print(f"   Opening webmail: {self.webmail_url}")
             self.driver.get(self.webmail_url)
-            time.sleep(3)
+
+            # Wait for webmail to load
+            print(f"   Waiting for page to load...")
+            time.sleep(3)  # Optimized for speed
 
             # Find and fill login form
             print(f"   Logging in as {email}...")
 
             # Find email field
-            email_field = WebDriverWait(self.driver, 10).until(
+            email_field = WebDriverWait(self.driver, 15).until(
                 EC.presence_of_element_located((By.NAME, "_user"))
             )
             email_field.clear()
+            time.sleep(0.2)
             email_field.send_keys(email)
+            time.sleep(0.3)
 
             # Find password field
             password_field = self.driver.find_element(By.NAME, "_pass")
             password_field.clear()
+            time.sleep(0.2)
             password_field.send_keys(password)
+            time.sleep(0.3)
 
             # Find and click login button
             login_button = self.driver.find_element(By.CSS_SELECTOR, "button[type='submit'], input[type='submit']")
             login_button.click()
 
+            # Wait for login to process
+            print(f"   Processing login...")
             time.sleep(3)
 
             # Check if login successful (should see inbox or mail interface)
@@ -74,11 +90,14 @@ class SeleniumEmailFetcher:
             print(f"   [ERROR] Login error: {e}")
             return False
 
-    def fetch_verification_code(self, max_attempts=18, wait_seconds=5):
+    def fetch_verification_code(self, max_attempts=12, wait_seconds=3):
         """Fetch TikTok verification code from inbox"""
         try:
             for attempt in range(max_attempts):
                 try:
+                    # Give page time to load/refresh
+                    time.sleep(1)
+
                     # Get inbox content
                     page_source = self.driver.page_source.lower()
 
@@ -102,15 +121,18 @@ class SeleniumEmailFetcher:
                                 # Click to open the email
                                 try:
                                     row.click()
+                                    time.sleep(0.5)
                                 except:
                                     # Try clicking a link inside
                                     try:
                                         link = row.find_element(By.TAG_NAME, "a")
                                         link.click()
+                                        time.sleep(0.5)
                                     except:
                                         pass
 
-                                time.sleep(2)
+                                # Wait for email to open
+                                time.sleep(1.5)
 
                                 # Get the email content
                                 email_content = self.driver.page_source
@@ -128,7 +150,7 @@ class SeleniumEmailFetcher:
                         # Try refreshing inbox
                         print(f"   [DEBUG] Refreshing inbox...")
                         self.driver.refresh()
-                        time.sleep(2)
+                        time.sleep(1)
 
                     else:
                         print(f"   Waiting for email... (attempt {attempt + 1}/{max_attempts})")

@@ -1,56 +1,49 @@
-# Sensitive files - DO NOT COMMIT
-accounts.xlsx
-accounts.json
-*.csv
-created_accounts.csv
-processed_accounts.txt
-
-# Passwords and credentials
-*.env
-.env
-credentials.json
-
-# Screenshots
-*.png
-*.jpg
-*.jpeg
-
 # Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
+*.py[cod]
+*$py.class
 *.so
-*.egg
+.Python
+env/
+venv/
 *.egg-info/
 dist/
 build/
 
+# User data
+data/
+results/
+oracle_results/
+*.xlsx
+*.csv
+*.txt
+!requirements.txt
+
+# Oracle config
+.env.oracle
+set_oracle_env.bat
+
+# Backups
+_backup_*/
+
+# Archive
+archive/
+
+# Screenshots
+test_screenshots/
+*.png
+
+# Docs
+docs/
+
 # Logs
 *.log
-geckodriver.log
-
-# Browser drivers
-geckodriver.exe
-chromedriver.exe
-
-# HTML files (saved pages)
-*.html
-
-# Temporary files
-nul
-*.tmp
-
-# Excel temporary files
-~$*.xlsx
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
 # OS
 .DS_Store
