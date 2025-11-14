@@ -385,7 +385,7 @@ urllib3>=1.26.0
 - Custom dropdown handling
 - Multi-method button clicking
 
-### v0.0.1 (Original by Hendrik Bgr)
+### v0.0.1 (Legacy)
 - Basic account creation
 - Manual verification required
 
@@ -423,13 +423,6 @@ Use responsibly and ethically.
 
 ---
 
-## Credits
-
-- **Original Author:** [Hendrik Bgr](https://github.com/hendrikbgr)
-- **Full Automation:** memoriesdead
-
----
-
 ## License
 
-Educational purposes. See original repository for licensing. 
+Educational purposes only. Use responsibly and ethically. 
