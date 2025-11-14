@@ -4,8 +4,6 @@
 
 **WORKING SOLUTION:** Connects to YOUR Chrome via CDP - Tested & Verified Nov 2025!
 
-Original concept by [Hendrik Bgr](https://github.com/hendrikbgr) - Enhanced with full automation by memoriesdead
-
 ---
 
 ## 🚀 LATEST: Playwright CDP Solution (v7.0) ✅ WORKING
